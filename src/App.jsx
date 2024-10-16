@@ -20,7 +20,11 @@ function App() {
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const [error, setError] = useState(null);
 
-  // Load categories from the API
+  useEffect(() => {
+    const storedHistory = JSON.parse(localStorage.getItem('quizHistory')) || [];
+    setHistory(storedHistory);
+  }, []);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -94,35 +98,23 @@ function App() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-300 to-teal-600">
+    <div className="bg-purple-50 min-h-screen">
       <Header />
-      <div className="p-4 text-gray-900 min-h-screen">
+      <div className="p-4 text-purple-900">
+        <Logo />
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            <strong className="font-bold">Error: </strong>
-            <span>{error}</span>
+            <strong className="font-bold">Error:</strong>
+            <span className="block sm:inline">{error}</span>
             <button className="absolute right-0 top-0 mt-2 mr-2" onClick={() => setError(null)}>
               <span>&times;</span>
             </button>
           </div>
         )}
-
-        {!quizStarted && questions.length === 0 ? (
-          <>
-            <Logo />
-            <QuizStart categories={categories} onStartQuiz={startQuiz} />
-            {history.length > 0 && (
-              <QuizHistory history={history} clearHistory={clearHistory} />
-            )}
-          </>
+        {!quizStarted && questions.length === 0 && !error ? (
+          <QuizStart categories={categories} onStartQuiz={startQuiz} />
         ) : !quizStarted && questions.length > 0 ? (
-          <ScoreSummary
-            score={score}
-            total={questions.length}
-            questions={questions}
-            userAnswers={userAnswers}
-            onRetakeQuiz={retakeQuiz}
-          />
+          <ScoreSummary score={score} total={questions.length} questions={questions} userAnswers={userAnswers} onRetakeQuiz={retakeQuiz} />
         ) : (
           <QuestionCard
             question={questions[currentQuestionIndex]}
@@ -131,6 +123,9 @@ function App() {
             totalQuestions={questions.length}
             score={score}
           />
+        )}
+        {history.length > 0 && (
+          <QuizHistory history={history} clearHistory={clearHistory} />
         )}
       </div>
       <Footer />
