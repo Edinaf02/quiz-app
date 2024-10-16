@@ -1,63 +1,50 @@
-// src/components/QuestionCard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+const QuestionCard = ({ question, onAnswerSelect, currentQuestionIndex, totalQuestions, score }) => {
+  const [shuffledAnswers, setShuffledAnswers] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
 
-const QuestionCard = ({ question, onAnswer }) => {
-  const [selected, setSelected] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  useEffect(() => {
+    const answers = [question.correct_answer, ...question.incorrect_answers];
+    setShuffledAnswers(answers.sort(() => Math.random() - 0.5));
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+  }, [question]);
 
-  const allAnswers = shuffleArray([
-    ...question.incorrect_answers,
-    question.correct_answer
-  ]);
-
-  const handleSelect = (answer) => {
-    setSelected(answer);
-  };
-
-  const handleSubmit = () => {
-    setIsSubmitted(true);
-    onAnswer(selected === question.correct_answer, selected);
+  const handleAnswerClick = (answer) => {
+    setSelectedAnswer(answer);
+    setIsAnswered(true);
+    onAnswerSelect(answer);
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md w-full max-w-xl">
-      <h2 className="text-xl mb-4" dangerouslySetInnerHTML={{ __html: question.question }}></h2>
-      <div className="flex flex-col">
-        {allAnswers.map((answer, index) => (
+    <div className="question-card bg-white p-4 border rounded shadow-md mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-xl font-bold">Question {currentQuestionIndex + 1} / {totalQuestions}</div>
+        <div className="w-12 h-12 bg-green-600 text-white font-bold rounded-full flex items-center justify-center">
+          {score}
+        </div>
+      </div>
+
+      <h2 className="text-xl mb-4" dangerouslySetInnerHTML={{ __html: question.question }} />
+
+      <div className="grid grid-cols-1 gap-4">
+        {shuffledAnswers.map((answer, index) => (
           <button
             key={index}
-            className={`mb-2 p-2 border rounded ${
-              isSubmitted
-                ? answer === question.correct_answer
-                  ? 'bg-green-200'
-                  : answer === selected
-                  ? 'bg-red-200'
-                  : ''
-                : selected === answer
-                ? 'bg-blue-100'
-                : ''
-            }`}
-            onClick={() => handleSelect(answer)}
-            disabled={isSubmitted}
+            className={`p-2 rounded border ${selectedAnswer ? (answer === question.correct_answer ? 'bg-green-500' : answer === selectedAnswer ? 'bg-red-500' : 'bg-gray-200') : 'bg-gray-200'}`}
+            onClick={() => handleAnswerClick(answer)}
             dangerouslySetInnerHTML={{ __html: answer }}
-          ></button>
+            disabled={isAnswered}
+          />
         ))}
       </div>
-      {!isSubmitted && (
-        <button
-          onClick={handleSubmit}
-          disabled={!selected}
-          className="mt-4 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 disabled:bg-gray-400"
-        >
-          Submit Answer
+
+      {isAnswered && (
+        <button className="mt-4 p-2 bg-blue-500 text-white rounded" onClick={() => onAnswerSelect(selectedAnswer)}>
+          Next
         </button>
-      )}
-      {isSubmitted && (
-        <p className="mt-4">
-          {selected === question.correct_answer ? '✅ Correct!' : `❌ Incorrect! Correct Answer: ${question.correct_answer}`}
-        </p>
       )}
     </div>
   );
