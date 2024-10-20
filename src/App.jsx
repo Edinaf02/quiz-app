@@ -4,7 +4,6 @@ import QuizStart from './components/QuizStart';
 import QuestionCard from './components/QuestionCard';
 import ScoreSummary from './components/ScoreSummary';
 import QuizHistory from './components/QuizHistory';
-import Logo from './components/Logo';
 import Footer from './components/Footer';
 import Header from './components/Header';
 
@@ -93,6 +92,7 @@ function App() {
       difficulty: selectedDifficulty,
       score,
       total: questions.length,
+      date: new Date().toLocaleString(),  // Add date to the history
     };
 
     const updatedHistory = [...history, newEntry];
@@ -119,8 +119,7 @@ function App() {
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center px-4 py-8 text-purple-900">
         
-        <div className="w-6 h-16 bg-blue-500"><Logo /></div>
-
+        {/* Error Handling */}
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md relative mb-6 max-w-lg w-full">
             <strong className="font-bold">Error:</strong>
@@ -131,17 +130,19 @@ function App() {
           </div>
         )}
 
+        {/* Quiz Start Screen */}
         {!quizStarted && questions.length === 0 && !error && (
           <QuizStart categories={categories} onStartQuiz={startQuiz} />
         )}
 
+        {/* Score Summary & History */}
         {!quizStarted && questions.length > 0 && (
           <>
             <ScoreSummary
               score={score}
               total={questions.length}
               questions={questions}
-              userAnswers={userAnswers}
+              userAnswers={userAnswers}  // Pass userAnswers to ScoreSummary
               onRetakeQuiz={retakeQuiz}
             />
             {history.length > 0 && (
@@ -150,6 +151,7 @@ function App() {
           </>
         )}
 
+        {/* Quiz Questions */}
         {quizStarted && (
           <QuestionCard
             question={questions[currentQuestionIndex]}

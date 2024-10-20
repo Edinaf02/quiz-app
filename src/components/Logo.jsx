@@ -2,10 +2,15 @@ import React from 'react';
 
 const Logo = () => {
   return (
-    <h1 className="w-6 h-6 bg-blue-500 bg-gradient-to-r from-purple-400 to-purple-600 text-transparent bg-clip-text text-xl md:text-3xl font-extrabold font-['Poppins']">
-       Quiz Me 
-        </h1>
-  );
+    <div className="logo-container  flex items-center justify-center h-30 md:h-30"> 
+
+        <img
+      src="https://tse2.mm.bing.net/th?id=OIG2.B1qTKp.aWkt0uv8SbqRq&pid=ImgGn"
+      alt="Quiz Logo"
+    />
+    
+    </div>
+  )
 }
 
-export default Logo;
+export default Logo

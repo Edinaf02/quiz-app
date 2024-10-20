@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Logo from './Logo';
 
 const QuizStart = ({ categories, onStartQuiz }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,17 +26,9 @@ const QuizStart = ({ categories, onStartQuiz }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
-      <div className="text-center mb-4">
-        <span className="text-purple-900 text-8xl font-normal font-['Poppins']">Quiz </span>
-        <span className="text-purple-600 text-8xl font-normal font-['Poppins']">Me</span>
-        <img
-          className="w-[98.08px] h-[55.95px] absolute origin-top-left rotate-[-14.58deg] mx-auto top-6"
-          src="https://cdn.dribbble.com/users/925386/screenshots/11014795/guardian-logo-05.png"
-          alt="Quiz Logo"
-        />
-      </div>
-
+    <div className="bg-gradient-to-r from-purple-300 to-purple-500 p-8 rounded-lg shadow-lg max-w-md mx-auto">
+      <Logo />
+      
       {/* Searchable Dropdown for Categories */}
       <div className="mb-4 relative">
         <label className="block text-left text-2xl mb-2 text-black">
@@ -100,8 +93,8 @@ const QuizStart = ({ categories, onStartQuiz }) => {
       {/* Start Quiz Button */}
       <button
         onClick={handleStartQuiz}
-        className={`w-full p-3 bg-purple-600 rounded-md text-white text-lg font-semibold transition-colors ${
-          !selectedCategory ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-700'
+        className={`w-full p-3 bg-purple-700 rounded-md text-white text-lg font-semibold transition-transform transform hover:scale-105 ${
+          !selectedCategory ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-800'
         }`}
         disabled={!selectedCategory}
       >

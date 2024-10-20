@@ -22,38 +22,42 @@ const QuestionCard = ({ question, onAnswerSelect, currentQuestionIndex, totalQue
   const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
 
   return (
-    <div className="w-[836.02px] h-[594.50px] relative bg-white flex flex-col items-center justify-center">
-      {/* Logo Section */}
-      <div className="flex justify-start items-center mb-4">
-        <div className="text-2xl font-bold text-purple-700">Quiz <span className="text-purple-900">Me</span></div>
-        <img
-          className="w-8 h-8 ml-2"
-          src="https://via.placeholder.com/31x17"
-          alt="Logo"
-        />
-      </div>
-
+    <div className="w-[836px] h-[594px] relative bg-white flex flex-col items-center justify-center shadow-lg rounded-lg">
       {/* Progress Bar */}
-      <div className="flex justify-center items-center mb-4">
-        {Array.from({ length: totalQuestions }, (_, index) => (
-          <div
-            key={index}
-            className={`flex items-center justify-center w-10 h-10 rounded-full text-center mx-2 ${index <= currentQuestionIndex ? 'bg-purple-600 text-white' : 'bg-gray-300 text-gray-500'}`}
-          >
-            {index + 1}
-          </div>
-        ))}
+      <div className="w-full mb-4 px-4">
+        <div className="flex justify-center mb-4">
+          {Array.from({ length: totalQuestions }, (_, index) => (
+            <div
+              key={index}
+              className={`flex items-center justify-center w-10 h-10 rounded-full text-center mx-2 font-semibold ${
+                index <= currentQuestionIndex ? 'bg-purple-600 text-white' : 'bg-gray-300 text-gray-500'
+              }`}
+            >
+              {index + 1}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Question Section */}
-      <div className="text-purple-800 text-2xl font-bold mb-6" dangerouslySetInnerHTML={{ __html: question.question }} />
+      <div className="w-full text-center">
+        <h2 className="text-purple-800 text-2xl font-bold mb-6 px-6" dangerouslySetInnerHTML={{ __html: question.question }} />
+      </div>
 
       {/* Answer Options */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-6 w-3/4 mt-4">
         {shuffledAnswers.map((answer, index) => (
           <button
             key={index}
-            className={`p-4 rounded text-lg font-semibold border ${selectedAnswer ? (answer === question.correct_answer ? 'bg-green-500 text-white' : answer === selectedAnswer ? 'bg-red-500 text-white' : 'bg-gray-200') : 'bg-gray-200'}`}
+            className={`w-full p-4 text-lg font-medium rounded-lg border transition-all duration-300 ease-in-out ${
+              selectedAnswer
+                ? answer === question.correct_answer
+                  ? 'bg-green-500 text-white border-green-500'
+                  : answer === selectedAnswer
+                  ? 'bg-red-500 text-white border-red-500'
+                  : 'bg-gray-100 text-gray-700 border-gray-300'
+                : 'bg-gray-50 text-gray-800 border border-gray-300 hover:bg-purple-100 hover:border-purple-500'
+            }`}
             onClick={() => handleAnswerClick(answer)}
             dangerouslySetInnerHTML={{ __html: answer }}
             disabled={isAnswered}
@@ -65,7 +69,7 @@ const QuestionCard = ({ question, onAnswerSelect, currentQuestionIndex, totalQue
       <div className="mt-8 flex justify-between w-full px-8">
         {/* Previous Button */}
         <button
-          className={`p-2 bg-purple-700 text-white rounded ${currentQuestionIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`p-3 bg-purple-600 text-white font-semibold rounded-lg shadow-md ${currentQuestionIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-700'}`}
           onClick={onPrevious}
           disabled={currentQuestionIndex === 0}
         >
@@ -74,7 +78,7 @@ const QuestionCard = ({ question, onAnswerSelect, currentQuestionIndex, totalQue
 
         {/* Next Button */}
         <button
-          className={`p-2 bg-purple-700 text-white rounded ${!isAnswered ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`p-3 bg-purple-600 text-white font-semibold rounded-lg shadow-md ${!isAnswered ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-700'}`}
           onClick={onNext}
           disabled={!isAnswered}
         >
