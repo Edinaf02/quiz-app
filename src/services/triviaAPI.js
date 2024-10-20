@@ -1,5 +1,3 @@
-// triviaAPI.js
-
 const BASE_URL = 'https://opentdb.com';
 
 // Function to fetch questions based on category, difficulty, and amount

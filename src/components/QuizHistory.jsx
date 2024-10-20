@@ -1,28 +1,22 @@
 import React from 'react';
 
-const QuizHistory = ({ history, clearHistory }) => {
+const QuizHistory = ({ history }) => {
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Quiz History</h2>
-      {history.length === 0 ? (
-        <p>No quiz history available.</p>
-      ) : (
-        <ul className="list-disc pl-5">
-          {history.map((entry, index) => (
-            <li key={index} className="mb-2">
-              <span className="font-semibold">Topic:</span> {entry.topic} <br />
-              <span className="font-semibold">Difficulty:</span> {entry.difficulty} <br />
-              <span className="font-semibold">Score:</span> {entry.score}/{entry.total} <br />
-            </li>
-          ))}
-        </ul>
-      )}
-      <button
-        onClick={clearHistory}
-        className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-      >
-        Clear History
-      </button>
+    <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 className="text-2xl font-bold text-purple-900 mb-4">Quiz History</h2>
+      <ul className="divide-y divide-gray-300">
+        {history.map((quiz, index) => (
+          <li key={index} className="py-2">
+            <div className="flex justify-between">
+              <span className="font-medium">{quiz.category}</span>
+              <span className={`font-bold ${quiz.score >= quiz.total ? 'text-green-500' : 'text-red-500'}`}>
+                {quiz.score} / {quiz.total}
+              </span>
+            </div>
+            <p className="text-sm text-gray-600">Date: {quiz.date}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
